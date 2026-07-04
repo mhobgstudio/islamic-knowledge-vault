@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Islamic Knowledge Vault</title>
-<meta name="description" content="Interactive HTML site for the Islamic Knowledge Obsidian vault - Quran, Hadith, and Islamic theology">
+<meta name="description" content="Interactive HTML site for the Islamic Knowledge Obsidian vault">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-  --primary: #1E3A8A; --primary-light: #2D4BA0; --accent: #FFD700;
+  --primary: #1E3A8A; --accent: #FFD700;
   --bg: #F8FAFC; --card: #FFFFFF; --text: #1A202C; --text-light: #4A5568;
   --border: #E5E7EB; --shadow: rgba(17,17,26,0.05); --shadow-hover: rgba(17,17,26,0.1);
 }
 [data-theme="dark"] {
-  --primary: #1E3A8A; --bg: #121827; --card: #1E293B; --text: #F1F5F9;
-  --text-light: #CBD5E1; --border: #334155; --shadow: rgba(0,0,0,0.2);
+  --primary: #2563EB; --bg: #0F172A; --card: #1E293B; --text: #F1F5F9;
+  --text-light: #94A3B8; --border: #334155; --shadow: rgba(0,0,0,0.3);
 }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -22,7 +22,7 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 header {
-  background: linear-gradient(135deg, var(--primary), #4A6CF7);
+  background: linear-gradient(135deg, var(--primary), #6366F1);
   color: white; padding: 2.5rem 1.5rem; text-align: center; position: relative;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
@@ -32,7 +32,7 @@ header p { opacity: 0.85; font-size: 1.05rem; }
   position: fixed; top: 1rem; right: 1rem; z-index: 100;
   background: rgba(255,255,255,0.2); border: none; color: white;
   width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-  font-size: 1.2rem; backdrop-filter: blur(8px); transition: transform 0.3s;
+  font-size: 1.3rem; backdrop-filter: blur(8px); transition: transform 0.3s;
 }
 .theme-toggle:hover { transform: scale(1.1); }
 .container { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
@@ -41,17 +41,19 @@ header p { opacity: 0.85; font-size: 1.05rem; }
   box-shadow: 0 4px 20px var(--shadow); margin-bottom: 2rem;
   position: sticky; top: 1rem; z-index: 50;
   border: 1px solid var(--border);
+  transition: background 0.3s, border-color 0.3s;
 }
 .search-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
 .search-input {
   flex: 1; min-width: 200px; padding: 0.8rem 1.2rem; border: 2px solid var(--border);
   border-radius: 10px; font-size: 1rem; background: var(--bg); color: var(--text);
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background 0.3s;
 }
 .search-input:focus { outline: none; border-color: var(--primary); }
 .filter-select {
   padding: 0.8rem 1.2rem; border: 2px solid var(--border); border-radius: 10px;
   font-size: 0.9rem; background: var(--bg); color: var(--text); cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
 }
 .stats { font-size: 0.9rem; color: var(--text-light); margin-top: 0.8rem; }
 .notes-grid {
@@ -81,8 +83,7 @@ header p { opacity: 0.85; font-size: 1.05rem; }
   text-transform: uppercase; letter-spacing: 0.5px;
 }
 .note-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text); }
-.note-preview { font-size: 0.9rem; color: var(--text-light); line-height: 1.5; }
-.note-links { margin-top: 0.8rem; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.note-preview { font-size: 0.9rem; color: var(--text-light); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .note-link {
   display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
   font-size: 0.78rem; background: rgba(45,75,160,0.08); color: var(--primary);
@@ -101,6 +102,7 @@ header p { opacity: 0.85; font-size: 1.05rem; }
   background: var(--card); border-radius: 16px; max-width: 900px; width: 100%;
   max-height: 85vh; overflow-y: auto; padding: 2rem; position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  transition: background 0.3s;
 }
 .modal-close {
   position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px;
@@ -128,7 +130,6 @@ header p { opacity: 0.85; font-size: 1.05rem; }
   .modal { padding: 1.5rem; }
 }
 .loading { text-align: center; padding: 3rem; color: var(--text-light); }
-.loading i { font-size: 2rem; margin-bottom: 1rem; display: block; }
 footer {
   text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem;
   border-top: 1px solid var(--border); margin-top: 2rem;
@@ -136,9 +137,9 @@ footer {
 </style>
 </head>
 <body>
-<button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+<button class="theme-toggle" id="theme-toggle"></button>
 <header>
-  <h1>📚 Islamic Knowledge Vault</h1>
+  <h1>&#128218; Islamic Knowledge Vault</h1>
   <p>Interactive exploration of Quran, Hadith, and Islamic theology</p>
 </header>
 <div class="container">
@@ -156,131 +157,160 @@ footer {
     </div>
     <div class="stats" id="stats"></div>
   </div>
-  <div class="loading" id="loading"><i>⏳</i> Loading notes...</div>
+  <div class="loading" id="loading">&#9203; Loading notes...</div>
   <div class="notes-grid" id="notes-grid"></div>
 </div>
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
     <div id="modal-content"></div>
   </div>
 </div>
 <footer>
-  <p>Generated from Obsidian Vault — <span id="year"></span></p>
+  <p>Generated from Obsidian Vault &mdash; <span id="year"></span></p>
 </footer>
 <script src="data.js"></script>
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
+(function() {
+  "use strict";
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// Populate categories
-const catSelect = document.getElementById('category-filter');
-for (const cat of Object.keys(CATEGORIES).sort()) {
-  const opt = document.createElement('option');
-  opt.value = cat; opt.textContent = cat;
-  catSelect.appendChild(opt);
-}
-
-let allNotes = NOTES;
-filterNotes();
-document.getElementById('loading').style.display = 'none';
-
-function filterNotes() {
-  const query = document.getElementById('search').value.toLowerCase();
-  const cat = document.getElementById('category-filter').value;
-  const linkFilter = document.getElementById('link-filter').value;
-
-  const filtered = allNotes.filter(n => {
-    if (cat !== 'all' && n.category !== cat) return false;
-    if (query && !n.title.toLowerCase().includes(query) &&
-        !n.preview.toLowerCase().includes(query)) return false;
-    if (linkFilter === 'has' && (!n.links || n.links.length === 0)) return false;
-    if (linkFilter === 'no' && n.links && n.links.length > 0) return false;
-    return true;
+  var catSelect = document.getElementById('category-filter');
+  Object.keys(CATEGORIES).sort().forEach(function(cat) {
+    var opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = cat;
+    catSelect.appendChild(opt);
   });
 
-  renderNotes(filtered);
-  document.getElementById('stats').textContent = `Showing ${filtered.length} of ${allNotes.length} notes`;
-}
+  var allNotes = NOTES;
+  var themeBtn = document.getElementById('theme-toggle');
 
-function renderNotes(notes) {
-  const grid = document.getElementById('notes-grid');
-  if (notes.length === 0) {
-    grid.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);grid-column:1/-1">No notes found</div>';
-    return;
+  function init() {
+    filterNotes();
+    var loading = document.getElementById('loading');
+    if (loading) loading.style.display = 'none';
   }
-  grid.innerHTML = notes.map(n => {
-    const linkCount = (n.links || []).length;
-    return \`
-      <div class="note-card" onclick="openModal('\${n.title.replace(/'/g, "\\'")}')">
-        <div class="note-category">\${n.category}</div>
-        <div class="note-title">\${n.title}</div>
-        <div class="note-preview">\${n.preview || 'No preview available'}</div>
-        \${linkCount > 0 ? \`<div class="link-count">\${linkCount} link\${linkCount > 1 ? 's' : ''}</div>\` : ''}
-      </div>
-    \`;
-  }).join('');
-}
 
-function openModal(title) {
-  const note = allNotes.find(n => n.title === title);
-  if (!note) return;
-
-  const links = LINKS[title] || [];
-  const existingLinks = links.filter(l => l.exists);
-  const missingLinks = links.filter(l => !l.exists);
-
-  document.getElementById('modal-content').innerHTML = \`
-    <div class="modal-title">\${note.title}</div>
-    <div class="modal-path">\${note.path}</div>
-    \${existingLinks.length > 0 ? \`
-      <div class="modal-section">
-        <h3>🔗 Links (\${existingLinks.length})</h3>
-        <div class="modal-links">
-          \${existingLinks.map(l => \`<a href="#" class="note-link" onclick="event.preventDefault();openModal('\${l.title.replace(/'/g, "\\'")}')">\${l.title}</a>\`).join('')}
-        </div>
-      </div>
-    \` : ''}
-    \${missingLinks.length > 0 ? \`
-      <div class="modal-section">
-        <h3>⚠️ Missing Links (\${missingLinks.length})</h3>
-        <div class="modal-links">
-          \${missingLinks.map(l => \`<span class="note-link missing">\${l.title}</span>\`).join('')}
-        </div>
-      </div>
-    \` : ''}
-    <div class="modal-section">
-      <h3>📄 Content</h3>
-      <div class="modal-body">\${note.preview || 'No content available'}</div>
-    </div>
-  \`;
-  document.getElementById('modal').classList.add('active');
-}
-
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal')) {
-    document.getElementById('modal').classList.remove('active');
-  }
-}
-
-function toggleTheme() {
-  const html = document.documentElement;
-  const btn = document.getElementById('theme-toggle');
-  if (html.getAttribute('data-theme') === 'dark') {
-    html.removeAttribute('data-theme');
-    btn.textContent = '🌙';
-    localStorage.setItem('theme', 'light');
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    html.setAttribute('data-theme', 'dark');
-    btn.textContent = '☀️';
-    localStorage.setItem('theme', 'dark');
+    init();
   }
-}
 
-// Restore theme
-if (localStorage.getItem('theme') === 'dark') {
-  document.documentElement.setAttribute('data-theme', 'dark');
-  document.getElementById('theme-toggle').textContent = '☀️';
-}
+  window.filterNotes = function() {
+    var query = document.getElementById('search').value.toLowerCase();
+    var cat = document.getElementById('category-filter').value;
+    var linkFilter = document.getElementById('link-filter').value;
+
+    var filtered = allNotes.filter(function(n) {
+      if (cat !== 'all' && n.category !== cat) return false;
+      if (query && n.title.toLowerCase().indexOf(query) === -1 &&
+          n.preview.toLowerCase().indexOf(query) === -1) return false;
+      if (linkFilter === 'has' && (!n.links || n.links.length === 0)) return false;
+      if (linkFilter === 'no' && n.links && n.links.length > 0) return false;
+      return true;
+    });
+
+    renderNotes(filtered);
+    document.getElementById('stats').textContent = 'Showing ' + filtered.length + ' of ' + allNotes.length + ' notes';
+  };
+
+  function renderNotes(notes) {
+    var grid = document.getElementById('notes-grid');
+    if (notes.length === 0) {
+      grid.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);grid-column:1/-1">No notes found</div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < notes.length; i++) {
+      var n = notes[i];
+      var linkCount = (n.links || []).length;
+      var safeTitle = n.title.replace(/'/g, "\\'");
+      html += '<div class="note-card" onclick="window.openModal(\'' + safeTitle + '\')">';
+      html += '<div class="note-category">' + escapeHtml(n.category) + '</div>';
+      html += '<div class="note-title">' + escapeHtml(n.title) + '</div>';
+      html += '<div class="note-preview">' + (n.preview || 'No preview available') + '</div>';
+      if (linkCount > 0) {
+        html += '<div class="link-count">' + linkCount + ' link' + (linkCount > 1 ? 's' : '') + '</div>';
+      }
+      html += '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  window.openModal = function(title) {
+    var note = null;
+    for (var i = 0; i < allNotes.length; i++) {
+      if (allNotes[i].title === title) {
+        note = allNotes[i];
+        break;
+      }
+    }
+    if (!note) return;
+
+    var links = LINKS[title] || [];
+    var existing = links.filter(function(l) { return l.exists; });
+    var missing = links.filter(function(l) { return !l.exists; });
+
+    var html = '<div class="modal-title">' + escapeHtml(note.title) + '</div>';
+    html += '<div class="modal-path">' + escapeHtml(note.path) + '</div>';
+
+    if (existing.length > 0) {
+      html += '<div class="modal-section"><h3>Links (' + existing.length + ')</h3><div class="modal-links">';
+      for (var j = 0; j < existing.length; j++) {
+        var safe = existing[j].title.replace(/'/g, "\\'");
+        html += '<a href="#" class="note-link" onclick="event.preventDefault();window.openModal(\'' + safe + '\')">' + escapeHtml(existing[j].title) + '</a>';
+      }
+      html += '</div></div>';
+    }
+    if (missing.length > 0) {
+      html += '<div class="modal-section"><h3>Missing Links (' + missing.length + ')</h3><div class="modal-links">';
+      for (var k = 0; k < missing.length; k++) {
+        html += '<span class="note-link missing">' + escapeHtml(missing[k].title) + '</span>';
+      }
+      html += '</div></div>';
+    }
+    html += '<div class="modal-section"><h3>Content</h3><div class="modal-body">' + (note.preview || 'No content available') + '</div></div>';
+
+    document.getElementById('modal-content').innerHTML = html;
+    document.getElementById('modal').classList.add('active');
+  };
+
+  window.closeModal = function(e) {
+    if (!e || e.target === document.getElementById('modal')) {
+      document.getElementById('modal').classList.remove('active');
+    }
+  };
+
+  function toggleTheme() {
+    var h = document.documentElement;
+    if (h.getAttribute('data-theme') === 'dark') {
+      h.removeAttribute('data-theme');
+      themeBtn.innerHTML = '&#127769;';
+      localStorage.setItem('theme', 'light');
+    } else {
+      h.setAttribute('data-theme', 'dark');
+      themeBtn.innerHTML = '&#9728;&#65039;';
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+  themeBtn.onclick = toggleTheme;
+
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeBtn.innerHTML = '&#9728;&#65039;';
+  } else {
+    themeBtn.innerHTML = '&#127769;';
+  }
+})();
 </script>
 </body>
 </html>
